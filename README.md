@@ -6,7 +6,7 @@ Descrição da Aplicação:
 Tecnologia: .NET 8
 Banco de Dados: SQL Server local
 Camadas e Tecnologias Utilizadas:
-Camada de Apresentação: MVC Core com Bootstrap e jQuery, Componente EPPlus para criação de relatórios
+Camada de Apresentação: MVC Core com Bootstrap e jQuery, Componente EPPPlus para criação de relatórios
 Camada de Persistência: Entity Framework Core
 Injeção de Dependência: Container padrão do .NET
 
