@@ -38,27 +38,32 @@ namespace DesafioTJRJ.UI.Controllers
             return View();
         }
 
-        public IActionResult Error(int id)
+        public IActionResult Error(int? id)
         {
             var modelErro = new ErrorViewModel();
 
-            if (id == 500)
+            if (!id.HasValue)
+            {
+                return StatusCode(500);
+            }
+
+            if (id.Value == 500)
             {
                 modelErro.Mensagem = "Ocorreu um erro! Tente novamente mais tarde ou contate nosso suporte.";
                 modelErro.Titulo = "Ocorreu um erro!";
-                modelErro.ErroCode = id;
+                modelErro.ErroCode = id.Value;
             }
-            else if (id == 404)
+            else if (id.Value == 404)
             {
                 modelErro.Mensagem = "A página que está procurando não existe! <br />Em caso de dúvidas entre em contato com nosso suporte";
                 modelErro.Titulo = "Ops! Página não encontrada.";
-                modelErro.ErroCode = id;
+                modelErro.ErroCode = id.Value;
             }
-            else if (id == 403)
+            else if (id.Value == 403)
             {
                 modelErro.Mensagem = "Você não tem permissão para fazer isto.";
                 modelErro.Titulo = "Acesso Negado";
-                modelErro.ErroCode = id;
+                modelErro.ErroCode = id.Value;
             }
             else
             {
