@@ -38,8 +38,6 @@ namespace DesafioTJRJ.UI.Controllers
             return View();
         }
 
-        [Route("erro/{id:length(3,3)}")]
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error(int id)
         {
             var modelErro = new ErrorViewModel();
