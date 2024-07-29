@@ -27,7 +27,7 @@ namespace DesafioTJRJ.Data.Mappings
 
             builder.HasMany(a => a.LivroAutores)
                 .WithOne(la => la.Autor)
-                .HasForeignKey(la => la.AutorId);
+                .HasForeignKey(la => la.CodAu);
         }
     }
 }

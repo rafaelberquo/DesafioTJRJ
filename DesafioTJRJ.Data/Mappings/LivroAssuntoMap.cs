@@ -15,21 +15,21 @@ namespace DesafioTJRJ.Data.Mappings
         {
             builder.ToTable("LivroAssunto");
 
-            builder.HasKey(la => new { la.LivroId, la.AssuntoId });
+            builder.HasKey(la => new { la.CodL, la.CodAs });
 
-            builder.Property(la => la.LivroId)
-                .HasColumnName("LivroId");
+            builder.Property(la => la.CodL)
+                .HasColumnName("CodL");
 
-            builder.Property(la => la.AssuntoId)
-                .HasColumnName("AssuntoId");
+            builder.Property(la => la.CodAs)
+                .HasColumnName("CodAs");
 
             builder.HasOne(la => la.Livro)
                 .WithMany(l => l.LivroAssuntos)
-                .HasForeignKey(la => la.LivroId);
+                .HasForeignKey(la => la.CodL);
 
             builder.HasOne(la => la.Assunto)
                 .WithMany(a => a.LivroAssuntos)
-                .HasForeignKey(la => la.AssuntoId);
+                .HasForeignKey(la => la.CodAs);
         }
     }
 

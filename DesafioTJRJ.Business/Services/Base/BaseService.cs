@@ -3,12 +3,13 @@ using DesafioTJRJ.Business.Interfaces.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace DesafioTJRJ.Business.Services.Base
 {
-    public abstract class BaseService<T> : IBaseService<T> where T : class
+    public class BaseService<T> : IBaseService<T> where T : class
     {
         private readonly IBaseRepository<T> _repository;
 
@@ -17,14 +18,19 @@ namespace DesafioTJRJ.Business.Services.Base
             _repository = repository;
         }
 
-        public async Task<IEnumerable<T>> GetAllAsync()
+        public IQueryable<T> GetAll(params Expression<Func<T, object>>[] includes)
         {
-            return await _repository.GetAllAsync();
+            return _repository.GetAll(includes);
         }
 
-        public async Task<T> GetByIdAsync(int id)
+        public async Task<IQueryable<T>> GetAllAsync(params Expression<Func<T, object>>[] includes)
         {
-            return await _repository.GetByIdAsync(id);
+            return await _repository.GetAllAsync(includes);
+        }
+
+        public async Task<T> GetByIdAsync(int id, params Expression<Func<T, object>>[] includes)
+        {
+            return await _repository.GetByIdAsync(id, includes);
         }
 
         public async Task AddAsync(T entity)

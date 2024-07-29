@@ -1,5 +1,6 @@
 ﻿using DesafioTJRJ.UI.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
 using System.Diagnostics;
 
 namespace DesafioTJRJ.UI.Controllers
@@ -15,6 +16,20 @@ namespace DesafioTJRJ.UI.Controllers
 
         public IActionResult Index()
         {
+            //string connectionString = "Server=localhost\\SQLEXPRESS;Database=DesafioTJRJ;User Id=desafio_app;Password=desafio_app01;TrustServerCertificate=True;";
+            //using (SqlConnection connection = new SqlConnection(connectionString))
+            //{
+            //    try
+            //    {
+            //        connection.Open();
+            //        Console.WriteLine("Conexão bem-sucedida!");
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        Console.WriteLine("Erro ao conectar: " + ex.Message);
+            //    }
+            //}
+
             return View();
         }
 
@@ -23,10 +38,36 @@ namespace DesafioTJRJ.UI.Controllers
             return View();
         }
 
+        [Route("erro/{id:length(3,3)}")]
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        public IActionResult Error(int id)
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            var modelErro = new ErrorViewModel();
+
+            if (id == 500)
+            {
+                modelErro.Mensagem = "Ocorreu um erro! Tente novamente mais tarde ou contate nosso suporte.";
+                modelErro.Titulo = "Ocorreu um erro!";
+                modelErro.ErroCode = id;
+            }
+            else if (id == 404)
+            {
+                modelErro.Mensagem = "A página que está procurando não existe! <br />Em caso de dúvidas entre em contato com nosso suporte";
+                modelErro.Titulo = "Ops! Página não encontrada.";
+                modelErro.ErroCode = id;
+            }
+            else if (id == 403)
+            {
+                modelErro.Mensagem = "Você não tem permissão para fazer isto.";
+                modelErro.Titulo = "Acesso Negado";
+                modelErro.ErroCode = id;
+            }
+            else
+            {
+                return StatusCode(500);
+            }
+
+            return View("Error", modelErro);
         }
     }
 }

@@ -12,9 +12,16 @@ namespace DesafioTJRJ.Business.Services
 {
     public class LivroService : BaseService<Livro>, ILivroService
     {
-        public LivroService(IBaseRepository<Livro> repository) : base(repository)
-        {
+        private readonly ILivroRepository _livroRepository;
 
+        public LivroService(ILivroRepository livroRepository) : base(livroRepository)
+        {
+            _livroRepository = livroRepository;
+        }
+
+        public async Task<Livro> GetByIdAsync(int id)
+        {
+            return await _livroRepository.GetLivroCompleto(id);
         }
     }
 }

@@ -6,10 +6,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DesafioTJRJ.Business.Interfaces.Repository;
 
 namespace DesafioTJRJ.Data.BaseRepository
 {
-    public class AutorRepository : BaseRepository<Autor>
+    public class AutorRepository : BaseRepository<Autor>, IAutorRepository
     {
         public AutorRepository(LibraryContext context) : base(context) { }
     }

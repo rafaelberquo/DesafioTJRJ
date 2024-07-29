@@ -41,11 +41,11 @@ namespace DesafioTJRJ.Data.Mappings
 
             builder.HasMany(l => l.LivroAutores)
                 .WithOne(la => la.Livro)
-                .HasForeignKey(la => la.LivroId);
+                .HasForeignKey(la => la.CodL);
 
             builder.HasMany(l => l.LivroAssuntos)
                 .WithOne(la => la.Livro)
-                .HasForeignKey(la => la.LivroId);
+                .HasForeignKey(la => la.CodL);
         }
     }
 }

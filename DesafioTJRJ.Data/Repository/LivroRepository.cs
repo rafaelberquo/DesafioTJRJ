@@ -6,11 +6,23 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DesafioTJRJ.Business.Interfaces.Repository;
+using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace DesafioTJRJ.Data.BaseRepository
 {
-    public class LivroRepository : BaseRepository<Livro>
+    public class LivroRepository : BaseRepository<Livro>, ILivroRepository
     {
         public LivroRepository(LibraryContext context) : base(context) { }
+
+
+
+        public async Task<Livro> GetLivroCompleto(int id)
+        {
+            return await GetAll().Include(l => l.LivroAutores).ThenInclude(la => la.Autor)  
+                                 .Include(l => l.LivroAssuntos).ThenInclude(la => la.Assunto)
+                                 .FirstOrDefaultAsync(l => l.CodL == id); 
+        }
     }
 }

@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -20,14 +21,35 @@ namespace DesafioTJRJ.Data.BaseRepository.Base
             this._dbSet = _context.Set<T>();
         }
 
-        public async Task<IEnumerable<T>> GetAllAsync()
+        public IQueryable<T> GetAll(params Expression<Func<T, object>>[] includes)
         {
-            return await this._dbSet.ToListAsync();
+            IQueryable<T> query = _dbSet;
+
+            foreach (var include in includes)
+            {
+                query = query.Include(include);
+            }
+
+            return query;
         }
 
-        public async Task<T> GetByIdAsync(int id)
+        public async Task<IQueryable<T>> GetAllAsync(params Expression<Func<T, object>>[] includes)
         {
-            return await this._dbSet.FindAsync(id);
+            var query = this.GetAll(includes);
+            return await Task.FromResult(query);
+        }
+
+        public async Task<T> GetByIdAsync(int id, params Expression<Func<T, object>>[] includes)
+        {
+            var query = await GetAllAsync(includes);
+
+            var keyName = _context.Model.FindEntityType(typeof(T)).FindPrimaryKey().Properties.First().Name;
+            var parameter = Expression.Parameter(typeof(T), "e");
+            var property = Expression.Property(parameter, keyName);
+            var equals = Expression.Equal(property, Expression.Constant(id));
+            var lambda = Expression.Lambda<Func<T, bool>>(equals, parameter);
+
+            return await query.FirstOrDefaultAsync(lambda);
         }
 
         public async Task AddAsync(T entity)

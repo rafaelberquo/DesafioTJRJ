@@ -8,8 +8,8 @@ namespace DesafioTJRJ.Business.Entities
 {
     public class LivroAutor
     {
-        public int LivroId { get; set; }
-        public int AutorId { get; set; }
+        public int CodL { get; set; }
+        public int CodAu { get; set; }
 
         public virtual Livro Livro { get; set; }
         public virtual Autor Autor { get; set; }

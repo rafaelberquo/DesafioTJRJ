@@ -16,5 +16,6 @@ namespace DesafioTJRJ.Business.Entities
 
         public virtual ICollection<LivroAutor> LivroAutores { get; set; } = new List<LivroAutor>();
         public virtual ICollection<LivroAssunto> LivroAssuntos { get; set; } = new List<LivroAssunto>();
+        public virtual ICollection<LivroPrecoFormaCompra> LivroPrecosFormaCompra { get; set; } = new List<LivroPrecoFormaCompra>();
     }
 }

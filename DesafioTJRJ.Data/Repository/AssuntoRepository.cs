@@ -1,4 +1,5 @@
 ﻿using DesafioTJRJ.Business.Entities;
+using DesafioTJRJ.Business.Interfaces.Repository;
 using DesafioTJRJ.Data.BaseRepository.Base;
 using DesafioTJRJ.Data.Context;
 using System;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace DesafioTJRJ.Data.BaseRepository
 {
-    public class AssuntoRepository : BaseRepository<Assunto>
+    public class AssuntoRepository : BaseRepository<Assunto>, IAssuntoRepository
     {
         public AssuntoRepository(LibraryContext context) : base(context) { }
     }

@@ -1,7 +1,9 @@
 using DesafioTJRJ.Data.Context;
+using DesafioTJRJ.UI.AutoMapper;
 using DesafioTJRJ.UI.Configurations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using System.Configuration;
 
 namespace DesafioTJRJ.UI
 {
@@ -11,15 +13,18 @@ namespace DesafioTJRJ.UI
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
-            builder.Services.AddControllersWithViews();
-
             // Configura o contexto do EF Core
             builder.Services.AddDbContext<LibraryContext>(options =>
-                options.UseSqlServer(builder.Configuration.GetConnectionString("DesafioTJRJ")));
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")).LogTo(Console.WriteLine, LogLevel.Information));
 
             // Configura a injeção de dependência definida em DependencyInjectionConfig
             builder.Services.ResolveDependencies();
+
+            // Mapeamentos do AutoMapper
+            builder.Services.AddAutoMapper(typeof(MappingProfile));
+
+            // Add services to the container.
+            builder.Services.AddControllersWithViews();
 
             var app = builder.Build();
 
