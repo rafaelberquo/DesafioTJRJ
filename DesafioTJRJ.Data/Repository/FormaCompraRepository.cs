@@ -10,8 +10,8 @@ using DesafioTJRJ.Business.Interfaces.Repository;
 
 namespace DesafioTJRJ.Data.Repository
 {
-    public class AutorRepository : BaseRepository<Autor>, IAutorRepository
+    public class FormaCompraRepository : BaseRepository<FormaCompra>, IFormaCompraRepository
     {
-        public AutorRepository(LibraryContext context) : base(context) { }
+        public FormaCompraRepository(LibraryContext context) : base(context) { }
     }
 }

@@ -2,6 +2,7 @@
 
     $("#AnoPublicacao").mask("0000");
     $("#Edicao").mask("0000");
+    $("#vlrPreco").mask('000.000.000.000.000,00', { reverse: true });
 });
 
 function addAutor() {
@@ -31,6 +32,25 @@ function addAutor() {
     }
 }
 
+function removeAutor(autorId, autorNome) {
+
+    var row = $(`#autor_${autorId}`);
+    var autorNome = row.find('td').first().text();
+    $('#novosAutores').append(`<option value="${autorId}">${autorNome}</option>`);
+    row.remove();
+    $('#autorError').text('');
+    sortOptions();
+
+    $('#tabelaAutores tbody tr').each(function (newIndex) {
+        $(this).find('input[type="hidden"]').each(function () {
+            var name = $(this).attr('name');
+            if (name) {
+                var novoName = name.replace(/\[\d+\]/, '[' + newIndex + ']');
+                $(this).attr('name', novoName);
+            }
+        });
+    });
+}
 
 function addAssunto() {
 
@@ -59,26 +79,6 @@ function addAssunto() {
     }
 }
 
-function removeAutor(autorId, autorNome) {
-
-    var row = $(`#autor_${autorId}`);
-    var autorNome = row.find('td').first().text();
-    $('#novosAutores').append(`<option value="${autorId}">${autorNome}</option>`);
-    row.remove();
-    $('#autorError').text('');
-    sortOptions();
-
-    $('#tabelaAutores tbody tr').each(function (newIndex) {
-        $(this).find('input[type="hidden"]').each(function () {
-            var name = $(this).attr('name');
-            if (name) {
-                var novoName = name.replace(/\[\d+\]/, '[' + newIndex + ']');
-                $(this).attr('name', novoName);
-            }
-        });
-    });
-}
-
 function removeAssunto(assuntoId, assuntoDescricao) {
     var row = $(`#assunto_${assuntoId}`);
     var assuntoDescricao = row.find('td').first().text();
@@ -97,8 +97,61 @@ function removeAssunto(assuntoId, assuntoDescricao) {
     });
 }
 
+function addPrecoFormaCompra() {
+
+    var livroId = $('#CodL').val();
+    var formaCompraId = $('#novosFormaCompra').val();
+    var formaCompraDescricao = $('#novosFormaCompra option:selected').text();
+    var precoValor = $('#vlrPreco').val();
+
+    var precoFloat = parseFloat(precoValor.replace(/\D/g, '') / 100).toFixed(2);
+    var precoValorFormatado = precoValor.replace('.', ',').replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+
+    if (formaCompraId && precoValor) {
+        var index = $('#tabelaPrecoFormaCompra tbody tr').length;
+        $('#tabelaPrecoFormaCompra tbody').append(`
+            <tr id="precoFormaCompra_${formaCompraId}">
+                <td>${formaCompraDescricao}</td>
+                <td>R$ ${precoValorFormatado}</td>
+                <td>
+                    <button type="button" class="btn btn-danger" onclick="removePrecoFormaCompra(${formaCompraId}, ${index})">Remover</button>
+                </td>
+                <input type="hidden" name="PrecosFormaCompra[${index}].CodL" value="${livroId}" />
+                <input type="hidden" name="PrecosFormaCompra[${index}].CodFormaCompra" value="${formaCompraId}" />
+                <input type="hidden" name="PrecosFormaCompra[${index}].FormaCompra" value="${formaCompraDescricao}" />
+                <input type="hidden" name="PrecosFormaCompra[${index}].Preco" value="${precoValor}" />
+            </tr>
+        `);
+        $('#novosFormaCompra option:selected').remove();
+        $('#formaCompraError').text('');
+        $('#vlrPreco').val('');
+        sortOptions();
+    } else {
+        $('#formaCompraError').text('Informe um preço e uma forma de compra para adicionar.');
+    }
+}
+
+function removePrecoFormaCompra(formaCompraId, formaCompraDescricao) {
+
+    var row = $(`#precoFormaCompra_${formaCompraId}`);
+    var formaCompraDescricao = row.find('td').first().text();
+    $('#novosFormaCompra').append(`<option value="${formaCompraId}">${formaCompraDescricao}</option>`);
+    row.remove();
+    $('#formaCompraError').text('');
+
+    $('#tabelaPrecoFormaCompra tbody tr').each(function (newIndex) {
+        $(this).find('input[type="hidden"]').each(function () {
+            var name = $(this).attr('name');
+            if (name) {
+                var novoName = name.replace(/\[\d+\]/, '[' + newIndex + ']');
+                $(this).attr('name', novoName);
+            }
+        });
+    });
+}
+
 function sortOptions() {
-    $("#novosAutores, #novosAssuntos").each(function () {
+    $("#novosAutores, #novosAssuntos, #novosFormaCompra").each(function () {
         var $options = $(this).find('option');
         $options.sort(function (a, b) {
             return $(a).text().localeCompare($(b).text());

@@ -24,7 +24,7 @@ namespace DesafioTJRJ.Data.Context
         public DbSet<LivroAutor> LivroAutores { get; set; }
         public DbSet<LivroAssunto> LivroAssuntos { get; set; }
         public DbSet<LivroPrecoFormaCompra> LivroPrecosFormaCompra { get; set; }
-        
+        public DbSet<ViewLivroAutorAssunto> ViewLivroAutorAssunto { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -36,6 +36,7 @@ namespace DesafioTJRJ.Data.Context
             modelBuilder.ApplyConfiguration(new LivroAssuntoMap());
             modelBuilder.ApplyConfiguration(new FormaCompraMap());
             modelBuilder.ApplyConfiguration(new LivroPrecoFormaCompraMap());
+            modelBuilder.ApplyConfiguration(new ViewLivroAutorAssuntoMap());
         }
     }
 }

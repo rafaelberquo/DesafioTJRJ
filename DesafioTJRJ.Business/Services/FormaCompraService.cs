@@ -10,14 +10,13 @@ using System.Threading.Tasks;
 
 namespace DesafioTJRJ.Business.Services
 {
-    public class AssuntoService : BaseService<Assunto>, IAssuntoService
+    public class FormaCompraService : BaseService<FormaCompra>, IFormaCompraService
     {
-        private readonly IAssuntoRepository _repository;
+        private readonly IFormaCompraRepository _repository;
 
-        public AssuntoService(IAssuntoRepository repository) : base(repository)
+        public FormaCompraService(IFormaCompraRepository repository) : base(repository)
         {
             _repository = repository;
         }
-
     }
 }

@@ -10,8 +10,8 @@ using System.Threading.Tasks;
 
 namespace DesafioTJRJ.Data.Repository
 {
-    public class AssuntoRepository : BaseRepository<Assunto>, IAssuntoRepository
+    public class ViewLivroAutorAssuntoRepository : BaseRepository<ViewLivroAutorAssunto>, IViewLivroAutorAssuntoRepository
     {
-        public AssuntoRepository(LibraryContext context) : base(context) { }
+        public ViewLivroAutorAssuntoRepository(LibraryContext context) : base(context) { }
     }
 }

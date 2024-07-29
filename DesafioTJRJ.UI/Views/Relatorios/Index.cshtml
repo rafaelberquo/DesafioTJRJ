@@ -1,0 +1,23 @@
+﻿@model IEnumerable<DesafioTJRJ.UI.ViewModels.LivroViewModel>
+
+@{
+    ViewData["Title"] = "Gerar Relatório Por Autor";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<hr />
+
+<div class="row">
+    <div <div class="col-md-8" style="text-align: justify;">
+        <h4>Esta funcionalidade irá gerar um relatório, em formato xlsx, contendo os dados principais de Autor, Livro e Assunto, agrupados por Autor</h4>
+
+        <div class="form-group text-center">
+
+            <form method="post" action="@Url.Action("GerarRelatorio", "Relatorios")">
+                <input type="submit" value="Gerar" class="btn btn-primary" />
+            </form>
+        </div>
+    </div>
+</div>
+

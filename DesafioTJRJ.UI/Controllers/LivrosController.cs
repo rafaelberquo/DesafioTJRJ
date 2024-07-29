@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using DesafioTJRJ.Business.Entities;
 using DesafioTJRJ.Business.Interfaces.Services;
+using DesafioTJRJ.Business.Services;
 using DesafioTJRJ.UI.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System.Runtime.CompilerServices;
@@ -12,13 +13,15 @@ namespace DesafioTJRJ.UI.Controllers
         private readonly ILivroService _livroService;
         private readonly IAutorService _autorService;
         private readonly IAssuntoService _assuntoService;
+        private readonly IFormaCompraService _formaCompraService;
         private readonly IMapper _mapper;
 
-        public LivrosController(ILivroService livroService, IAutorService autorService, IAssuntoService assuntoService, IMapper mapper)
+        public LivrosController(ILivroService livroService, IAutorService autorService, IAssuntoService assuntoService, IFormaCompraService formaCompraService, IMapper mapper)
         {
             _livroService = livroService;
             _autorService = autorService;
             _assuntoService = assuntoService;
+            _formaCompraService = formaCompraService;
             _mapper = mapper;
         }
 
@@ -33,7 +36,7 @@ namespace DesafioTJRJ.UI.Controllers
         public async Task<IActionResult> Cadastrar()
         {
             var viewModel = new LivroViewModel();
-            await this.SetViewBag(viewModel.Assuntos, viewModel.Autores);
+            await this.SetViewBag(viewModel.Assuntos, viewModel.Autores, viewModel.PrecosFormaCompra);
 
             return View(viewModel);
         }
@@ -42,6 +45,7 @@ namespace DesafioTJRJ.UI.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Cadastrar(LivroViewModel livroViewModel)
         {
+            this.ValidarAutoresAssuntos(livroViewModel);
             if (ModelState.IsValid)
             {
                 var livro = _mapper.Map<Livro>(livroViewModel);
@@ -51,7 +55,7 @@ namespace DesafioTJRJ.UI.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            await this.SetViewBag(livroViewModel.Assuntos, livroViewModel.Autores);
+            await this.SetViewBag(livroViewModel.Assuntos, livroViewModel.Autores, livroViewModel.PrecosFormaCompra);
             return View(livroViewModel);
         }
 
@@ -65,7 +69,7 @@ namespace DesafioTJRJ.UI.Controllers
             }
 
             var viewModel = _mapper.Map<LivroViewModel>(livro);
-            await this.SetViewBag(viewModel.Assuntos, viewModel.Autores);
+            await this.SetViewBag(viewModel.Assuntos, viewModel.Autores, viewModel.PrecosFormaCompra);
             return View(viewModel);
         }
 
@@ -80,6 +84,7 @@ namespace DesafioTJRJ.UI.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
+            this.ValidarAutoresAssuntos(livroViewModel);
             if (ModelState.IsValid)
             {
                 var livro = _mapper.Map(livroViewModel, livroBd);
@@ -89,7 +94,7 @@ namespace DesafioTJRJ.UI.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            await this.SetViewBag(livroViewModel.Assuntos, livroViewModel.Autores);
+            await this.SetViewBag(livroViewModel.Assuntos, livroViewModel.Autores, livroViewModel.PrecosFormaCompra);
             return View(livroViewModel);
         }
 
@@ -116,12 +121,15 @@ namespace DesafioTJRJ.UI.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private async Task SetViewBag(List<LivroAssuntoViewModel> assuntos, List<LivroAutorViewModel> autores)
+        private async Task SetViewBag(List<LivroAssuntoViewModel> assuntos, List<LivroAutorViewModel> autores, List<LivroPrecoFormaCompraViewModel> formasCompras)
         {
             var todosAutores = await _autorService.GetAllAsync();
             var todosAssuntos = await _assuntoService.GetAllAsync();
+            var todasFormasCompra = await _formaCompraService.GetAllAsync();
+
             var autoresVinculados = autores.Select(a => a.CodAu).ToHashSet();
             var assuntosVinculados = assuntos.Select(a => a.CodAs).ToHashSet();
+            var formasComprasVinculadas = formasCompras.Select(a => a.CodFormaCompra).ToHashSet();
 
             ViewBag.AutoresDisponiveis = todosAutores
                 .Where(a => !autoresVinculados.Contains(a.CodAu))
@@ -132,7 +140,24 @@ namespace DesafioTJRJ.UI.Controllers
                 .Where(a => !assuntosVinculados.Contains(a.CodAs))
                 .Select(a => _mapper.Map<AssuntoViewModel>(a))
                 .ToList();
+
+            ViewBag.FormasCompraDisponiveis = todasFormasCompra
+                .Where(a => !formasComprasVinculadas.Contains(a.CodFormaCompra))
+                .Select(a => _mapper.Map<FormaCompraViewModel>(a))
+                .ToList();
+        }
+
+        private void ValidarAutoresAssuntos(LivroViewModel viewModel)
+        {
+            if (viewModel.Autores == null || !viewModel.Autores.Any())
+            {
+                ModelState.AddModelError("Autores", "É necessário adicionar ao menos um autor.");
+            }
+
+            if (viewModel.Assuntos == null || !viewModel.Assuntos.Any())
+            {
+                ModelState.AddModelError("Assuntos", "É necessário adicionar ao menos um assunto.");
+            }
         }
     }
-
 }

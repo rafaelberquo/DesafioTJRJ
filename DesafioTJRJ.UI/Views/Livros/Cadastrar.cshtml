@@ -6,6 +6,7 @@
     ViewData["Title"] = "Cadastrar Livro";
     var autoresDisponiveis = ViewBag.AutoresDisponiveis as List<AutorViewModel>;
     var assuntosDisponiveis = ViewBag.AssuntosDisponiveis as List<AssuntoViewModel>;
+    var formasCompraDisponiveis = ViewBag.FormasCompraDisponiveis as List<FormaCompraViewModel>;
 }
 
 <h1>@ViewData["Title"]</h1>
@@ -57,6 +58,7 @@
                         <button type="button" class="btn btn-secondary mt-2" onclick="addAutor()">Adicionar</button>
                     </div>
                     <span id="autorError" class="text-danger d-block mt-2"></span>
+                    <span asp-validation-for="Autores" class="text-danger"></span>
                 </div>
 
                 <div class="form-group">
@@ -102,6 +104,7 @@
                         <button type="button" class="btn btn-secondary mt-2" onclick="addAssunto()">Adicionar</button>
                     </div>
                     <span id="assuntoError" class="text-danger d-block mt-2"></span>
+                    <span asp-validation-for="Assuntos" class="text-danger"></span>
                 </div>
 
                 <div class="form-group">
@@ -123,6 +126,54 @@
                                     <input type="hidden" name="Assuntos[@i].CodL" value="@Model.Assuntos[i].CodL" />
                                     <input type="hidden" name="Assuntos[@i].CodAs" value="@Model.Assuntos[i].CodAs" />
                                     <input type="hidden" name="Assuntos[@i].Descricao" value="@Model.Assuntos[i].Descricao" />
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend>Preços por Forma de Compra</legend>
+
+                <div class="form-group">
+                    <label>Adicionar Preço por Forma de Compra</label>
+                    <select id="novosFormaCompra" class="form-control">
+                        @foreach (var formaCompra in formasCompraDisponiveis)
+                        {
+                            <option value="@formaCompra.CodFormaCompra">@formaCompra.Descricao</option>
+                        }
+                    </select>
+
+                    <label class="control-label">Preço</label>
+                    <input class="form-control" id="vlrPreco" />
+
+                    <div class="text-right mt-2">
+                        <button type="button" class="btn btn-secondary mt-2" onclick="addPrecoFormaCompra()">Adicionar</button>
+                    </div>
+                    <span id="formaCompraError" class="text-danger d-block mt-2"></span>
+                </div>
+
+                <div class="form-group">
+                    <table id="tabelaPrecoFormaCompra" class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Forma de Compra</th>
+                                <th>Preço</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (int i = 0; i < Model.PrecosFormaCompra.Count; i++)
+                            {
+                                <tr id="precoFormaCompra_@Model.PrecosFormaCompra[i].CodFormaCompra">
+                                    <td>@Model.PrecosFormaCompra[i].FormaCompra</td>
+                                    <td>@Model.PrecosFormaCompra[i].PrecoFormatado</td>
+                                    <td><button type="button" class="btn btn-danger" onclick="removePrecoFormaCompra(@Model.PrecosFormaCompra[i].CodFormaCompra, @i)">Remover</button></td>
+                                    <input type="hidden" name="PrecosFormaCompra[@i].CodL" value="@Model.PrecosFormaCompra[i].CodL" />
+                                    <input type="hidden" name="PrecosFormaCompra[@i].CodFormaCompra" value="@Model.PrecosFormaCompra[i].CodFormaCompra" />
+                                    <input type="hidden" name="PrecosFormaCompra[@i].FormaCompra" value="@Model.PrecosFormaCompra[i].FormaCompra" />
+                                    <input type="hidden" name="PrecosFormaCompra[@i].Preco" value="@Model.PrecosFormaCompra[i].Preco" />
                                 </tr>
                             }
                         </tbody>

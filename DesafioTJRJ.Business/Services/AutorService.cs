@@ -12,10 +12,11 @@ namespace DesafioTJRJ.Business.Services
 {
     public class AutorService : BaseService<Autor>, IAutorService
     {
-        public AutorService(IBaseRepository<Autor> repository) : base(repository)
-        {
-        }
+        private readonly IAutorRepository _repository;
 
-        
+        public AutorService(IAutorRepository repository) : base(repository)
+        {
+            _repository = repository;
+        }
     }
 }

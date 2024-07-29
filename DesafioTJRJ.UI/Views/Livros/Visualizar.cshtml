@@ -75,6 +75,29 @@
                 </div>
             </fieldset>
 
+            <fieldset>
+                <legend>Preços por Forma de Compra</legend>
+                <div class="form-group">
+                    <table id="tabelaPrecoFormaCompra" class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Forma de Compra</th>
+                                <th>Preço</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        @for (int i = 0; i < Model.PrecosFormaCompra.Count; i++)
+                            {
+                                <tr id="precoFormaCompra_@Model.PrecosFormaCompra[i].CodFormaCompra">
+                                    <td>@Model.PrecosFormaCompra[i].FormaCompra</td>
+                                    <td>@Model.PrecosFormaCompra[i].PrecoFormatado</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </fieldset>
+
             <div class="form-group text-right">
                 <a asp-action="Editar" asp-route-id="@Model.CodL" class="btn btn-warning">Editar</a>
                 <a asp-action="Index" class="btn btn-primary">Cancelar</a>

@@ -31,5 +31,7 @@ namespace DesafioTJRJ.UI.ViewModels
         public List<LivroAutorViewModel> Autores { get; set; } = new List<LivroAutorViewModel>();
 
         public List<LivroAssuntoViewModel> Assuntos { get; set; } = new List<LivroAssuntoViewModel>();
+
+        public List<LivroPrecoFormaCompraViewModel> PrecosFormaCompra { get; set; } = new List<LivroPrecoFormaCompraViewModel>();
     }
 }
