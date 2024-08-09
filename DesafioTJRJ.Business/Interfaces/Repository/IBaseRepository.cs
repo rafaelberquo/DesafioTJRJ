@@ -9,7 +9,6 @@ namespace DesafioTJRJ.Business.Interfaces.Repository
 {
     public interface IBaseRepository<T> where T : class
     {
-        IQueryable<T> GetAll(params Expression<Func<T, object>>[] includes);
         Task<IQueryable<T>> GetAllAsync(params Expression<Func<T, object>>[] includes);
         Task<T> GetByIdAsync(int id, params Expression<Func<T, object>>[] includes);
         Task AddAsync(T entity);

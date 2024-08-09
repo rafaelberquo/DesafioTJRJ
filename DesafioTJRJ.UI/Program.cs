@@ -40,11 +40,12 @@ namespace DesafioTJRJ.UI
                         {
                             logger.LogError(exceptionHandlerPathFeature.Error, "Exceção não tratada");
                         }
+                        context.Response.StatusCode = 500;
                         context.Response.Redirect("/Home/Error/500");
                     });
                 });
 
-                app.UseStatusCodePagesWithRedirects("/Home/Error/{0}");
+                app.UseStatusCodePagesWithReExecute("/Home/Error/{0}");
                 app.UseHsts();
             }
 

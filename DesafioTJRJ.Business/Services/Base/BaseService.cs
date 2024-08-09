@@ -18,11 +18,6 @@ namespace DesafioTJRJ.Business.Services.Base
             _repository = repository;
         }
 
-        public IQueryable<T> GetAll(params Expression<Func<T, object>>[] includes)
-        {
-            return _repository.GetAll(includes);
-        }
-
         public async Task<IQueryable<T>> GetAllAsync(params Expression<Func<T, object>>[] includes)
         {
             return await _repository.GetAllAsync(includes);
