@@ -1,6 +1,7 @@
 using DesafioTJRJ.Data.Context;
 using DesafioTJRJ.UI.AutoMapper;
 using DesafioTJRJ.UI.Configurations;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System.Configuration;
@@ -27,13 +28,23 @@ namespace DesafioTJRJ.UI
             builder.Services.AddControllersWithViews();
 
             var app = builder.Build();
-
-            // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
             {
-                app.UseExceptionHandler("/Home/Error/500");
+                app.UseExceptionHandler(errorApp =>
+                {
+                    errorApp.Run(async context =>
+                    {
+                        var exceptionHandlerPathFeature = context.Features.Get<IExceptionHandlerPathFeature>();
+                        var logger = app.Services.GetRequiredService<ILogger<Program>>();
+                        if (exceptionHandlerPathFeature?.Error != null)
+                        {
+                            logger.LogError(exceptionHandlerPathFeature.Error, "Exceção não tratada");
+                        }
+                        context.Response.Redirect("/Home/Error/500");
+                    });
+                });
+
                 app.UseStatusCodePagesWithRedirects("/Home/Error/{0}");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
 

@@ -7,29 +7,13 @@ namespace DesafioTJRJ.UI.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-
         public HomeController(ILogger<HomeController> logger)
         {
-            _logger = logger;
+            
         }
 
         public IActionResult Index()
         {
-            //string connectionString = "Server=localhost\\SQLEXPRESS;Database=DesafioTJRJ;User Id=desafio_app;Password=desafio_app01;TrustServerCertificate=True;";
-            //using (SqlConnection connection = new SqlConnection(connectionString))
-            //{
-            //    try
-            //    {
-            //        connection.Open();
-            //        Console.WriteLine("Conexão bem-sucedida!");
-            //    }
-            //    catch (Exception ex)
-            //    {
-            //        Console.WriteLine("Erro ao conectar: " + ex.Message);
-            //    }
-            //}
-
             return View();
         }
 
