@@ -12,6 +12,7 @@
 - **Camada de Apresentação**: MVC Core com Bootstrap e jQuery, Componente EPPlus para criação de relatórios
 - **Camada de Persistência**: Entity Framework Core
 - **Injeção de Dependência**: Container padrão do .NET
+- **Testes unitários**: xUnit
 
 ### Estrutura do Banco de Dados
 
