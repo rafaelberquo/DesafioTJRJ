@@ -23,10 +23,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Entities\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\DesafioTJRJ.Business\DesafioTJRJ.Business.csproj" />
     <ProjectReference Include="..\DesafioTJRJ.Data\DesafioTJRJ.Data.csproj" />
   </ItemGroup>
