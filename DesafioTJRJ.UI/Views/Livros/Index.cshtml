@@ -1,0 +1,39 @@
+﻿@model IEnumerable<DesafioTJRJ.UI.ViewModels.LivroViewModel>
+
+@{
+    ViewData["Title"] = "Listar Livros";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<p>
+    <a class="btn btn-secondary" asp-action="Cadastrar">Cadastrar Novo Livro</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Título</th>
+            <th>Editora</th>
+            <th>Edição</th>
+            <th>Ano de Publicação</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var livro in Model)
+        {
+            <tr>
+                <td>@livro.Titulo</td>
+                <td>@livro.Editora</td>
+                <td>@livro.Edicao</td>
+                <td>@livro.AnoPublicacao</td>
+                <td class="actionColumn">
+                    <a asp-action="Editar" asp-route-id="@livro.CodL" class="btn btn-secondary">Editar</a>
+                    <a asp-action="Visualizar" asp-route-id="@livro.CodL" class="btn btn-secondary">Visualizar</a>
+                    <button class="btn btn-danger" data-toggle="modal" data-target="#deleteModal" data-id="@livro.CodL" data-name="@livro.Titulo" data-url="@Url.Action("Remover", "Livros", new { id = livro.CodL })">Excluir</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,107 @@
+﻿@using DesafioTJRJ.UI.ViewModels;
+
+@model LivroViewModel
+
+@{
+    ViewData["Title"] = "Visualizar Livro";
+}
+
+<h1>@ViewData["Title"]</h1>
+<hr />
+
+<div class="row">
+    <div class="col-md-8">
+
+            <div class="form-group">
+                <label asp-for="Titulo" class="control-label"></label>
+                <input asp-for="Titulo" class="form-control" readonly />
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Editora" class="control-label"></label>
+                <input asp-for="Editora" class="form-control" readonly />
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Edicao" class="control-label"></label>
+                <input asp-for="Edicao" class="form-control" readonly />
+            </div>
+
+            <div class="form-group">
+                <label asp-for="AnoPublicacao" class="control-label"></label>
+                <input asp-for="AnoPublicacao" class="form-control" readonly />
+            </div>
+
+            <fieldset>
+                <legend>Autores</legend>
+                <div class="form-group">
+                    <table id="tabelaAutores" class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Nome</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (int i = 0; i < Model.Autores.Count; i++)
+                            {
+                                <tr id="autor_@Model.Autores[i].CodAu">
+                                    <td>@Model.Autores[i].Nome</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+            </fieldset>
+
+            <fieldset>
+                <legend>Assuntos</legend>
+                <div class="form-group">
+                    <table id="tabelaAssuntos" class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Descrição</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (int i = 0; i < Model.Assuntos.Count; i++)
+                            {
+                                <tr id="assunto_@Model.Assuntos[i].CodAs">
+                                    <td>@Model.Assuntos[i].Descricao</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend>Preços por Forma de Compra</legend>
+                <div class="form-group">
+                    <table id="tabelaPrecoFormaCompra" class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Forma de Compra</th>
+                                <th>Preço</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        @for (int i = 0; i < Model.PrecosFormaCompra.Count; i++)
+                            {
+                                <tr id="precoFormaCompra_@Model.PrecosFormaCompra[i].CodFormaCompra">
+                                    <td>@Model.PrecosFormaCompra[i].FormaCompra</td>
+                                    <td>@Model.PrecosFormaCompra[i].PrecoFormatado</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </fieldset>
+
+            <div class="form-group text-right">
+                <a asp-action="Editar" asp-route-id="@Model.CodL" class="btn btn-warning">Editar</a>
+                <a asp-action="Index" class="btn btn-primary">Cancelar</a>
+            </div>
+
+    </div>
+</div>

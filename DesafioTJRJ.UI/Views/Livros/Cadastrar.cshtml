@@ -1,0 +1,203 @@
+﻿@using DesafioTJRJ.UI.ViewModels;
+
+@model LivroViewModel
+
+@{
+    ViewData["Title"] = "Cadastrar Livro";
+    var autoresDisponiveis = ViewBag.AutoresDisponiveis as List<AutorViewModel>;
+    var assuntosDisponiveis = ViewBag.AssuntosDisponiveis as List<AssuntoViewModel>;
+    var formasCompraDisponiveis = ViewBag.FormasCompraDisponiveis as List<FormaCompraViewModel>;
+}
+
+<h1>@ViewData["Title"]</h1>
+<hr />
+
+<div class="row">
+    <div class="col-md-8">
+
+        <form asp-action="Cadastrar" method="post">
+
+            <input type="hidden" asp-for="CodL" />
+
+            <div class="form-group">
+                <label asp-for="Titulo" class="control-label"></label>
+                <input asp-for="Titulo" class="form-control" />
+                <span asp-validation-for="Titulo" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Editora" class="control-label"></label>
+                <input asp-for="Editora" class="form-control" />
+                <span asp-validation-for="Editora" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Edicao" class="control-label"></label>
+                <input asp-for="Edicao" class="form-control" />
+                <span asp-validation-for="Edicao" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="AnoPublicacao" class="control-label"></label>
+                <input asp-for="AnoPublicacao" class="form-control" />
+                <span asp-validation-for="AnoPublicacao" class="text-danger"></span>
+            </div>
+
+            <fieldset>
+                <legend>Autores</legend>
+
+                <div class="form-group">
+                    <label>Adicionar Autor</label>
+                    <select id="novosAutores" class="form-control">
+                        @foreach (var autor in autoresDisponiveis)
+                        {
+                            <option value="@autor.CodAu">@autor.Nome</option>
+                        }
+                    </select>
+                    <div class="text-right mt-2">
+                        <button type="button" class="btn btn-secondary mt-2" onclick="addAutor()">Adicionar</button>
+                    </div>
+                    <span id="autorError" class="text-danger d-block mt-2"></span>
+                    <span asp-validation-for="Autores" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <table id="tabelaAutores" class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Nome</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (int i = 0; i < Model.Autores.Count; i++)
+                            {
+                                <tr id="autor_@Model.Autores[i].CodAu">
+                                    <td>@Model.Autores[i].Nome</td>
+                                    <td class="actionColumn">
+                                        <button type="button" class="btn btn-danger" onclick="removeAutor(@Model.Autores[i].CodAu, @i)">Remover</button>
+                                        <input type="hidden" name="Autores[@i].CodL" value="@Model.Autores[i].CodL" />
+                                        <input type="hidden" name="Autores[@i].CodAu" value="@Model.Autores[i].CodAu" />
+                                        <input type="hidden" name="Autores[@i].Nome" value="@Model.Autores[i].Nome" />
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+            </fieldset>
+
+
+            <fieldset>
+                <legend>Assuntos</legend>
+
+                <div class="form-group">
+                    <label>Adicionar Assunto</label>
+                    <select id="novosAssuntos" class="form-control">
+                        @foreach (var assunto in assuntosDisponiveis)
+                        {
+                            <option value="@assunto.CodAs">@assunto.Descricao</option>
+                        }
+                    </select>
+                    <div class="text-right mt-2">
+                        <button type="button" class="btn btn-secondary mt-2" onclick="addAssunto()">Adicionar</button>
+                    </div>
+                    <span id="assuntoError" class="text-danger d-block mt-2"></span>
+                    <span asp-validation-for="Assuntos" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <table id="tabelaAssuntos" class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Descrição</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (int i = 0; i < Model.Assuntos.Count; i++)
+                            {
+                                <tr id="assunto_@Model.Assuntos[i].CodAs">
+                                    <td>@Model.Assuntos[i].Descricao</td>
+                                    <td class="actionColumn">
+                                        <button type="button" class="btn btn-danger" onclick="removeAssunto(@Model.Assuntos[i].CodAs, @i)">Remover</button>
+                                        <input type="hidden" name="Assuntos[@i].CodL" value="@Model.Assuntos[i].CodL" />
+                                        <input type="hidden" name="Assuntos[@i].CodAs" value="@Model.Assuntos[i].CodAs" />
+                                        <input type="hidden" name="Assuntos[@i].Descricao" value="@Model.Assuntos[i].Descricao" />
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend>Preços por Forma de Compra</legend>
+
+                <div class="form-group">
+                    <label>Adicionar Preço por Forma de Compra</label>
+                    <select id="novosFormaCompra" class="form-control">
+                        @foreach (var formaCompra in formasCompraDisponiveis)
+                        {
+                            <option value="@formaCompra.CodFormaCompra">@formaCompra.Descricao</option>
+                        }
+                    </select>
+
+                    <label class="control-label">Preço</label>
+                    <input class="form-control" id="vlrPreco" />
+
+                    <div class="text-right mt-2">
+                        <button type="button" class="btn btn-secondary mt-2" onclick="addPrecoFormaCompra()">Adicionar</button>
+                    </div>
+                    <span id="formaCompraError" class="text-danger d-block mt-2"></span>
+                    <span asp-validation-for="PrecosFormaCompra" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <table id="tabelaPrecoFormaCompra" class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Forma de Compra</th>
+                                <th>Preço</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (int i = 0; i < Model.PrecosFormaCompra.Count; i++)
+                            {
+                                <tr id="precoFormaCompra_@Model.PrecosFormaCompra[i].CodFormaCompra">
+                                    <td>@Model.PrecosFormaCompra[i].FormaCompra</td>
+                                    <td>@Model.PrecosFormaCompra[i].PrecoFormatado</td>
+                                    <td class="actionColumn">
+                                        <button type="button" class="btn btn-danger" onclick="removePrecoFormaCompra(@Model.PrecosFormaCompra[i].CodFormaCompra, @i)">Remover</button>
+                                        <input type="hidden" name="PrecosFormaCompra[@i].CodL" value="@Model.PrecosFormaCompra[i].CodL" />
+                                        <input type="hidden" name="PrecosFormaCompra[@i].CodFormaCompra" value="@Model.PrecosFormaCompra[i].CodFormaCompra" />
+                                        <input type="hidden" name="PrecosFormaCompra[@i].FormaCompra" value="@Model.PrecosFormaCompra[i].FormaCompra" />
+                                        <input type="hidden" name="PrecosFormaCompra[@i].Preco" value="@Model.PrecosFormaCompra[i].Preco" />
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </fieldset>
+
+            <div class="form-group text-right">
+                <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+                <input type="submit" value="Salvar" class="btn btn-primary" />
+            </div>
+        </form>
+
+    </div>
+</div>
+
+@section Scripts {
+
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script src="~/js/app/Livros/CadastrarEditar.js"></script>
+}

@@ -1,0 +1,37 @@
+﻿@model IEnumerable<DesafioTJRJ.UI.ViewModels.AssuntoViewModel>
+
+@{
+    ViewData["Title"] = "Listar Assuntos";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<p>
+    <a asp-action="Cadastrar" class="btn btn-secondary">Cadastrar Novo Assunto</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Descricao)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Descricao)
+                </td>
+                <td class="actionColumn">
+                    <a asp-action="Editar" asp-route-id="@item.CodAs" class="btn btn-secondary">Editar</a>
+                    <a asp-action="Visualizar" asp-route-id="@item.CodAs" class="btn btn-secondary">Visualizar</a>
+                    <button class="btn btn-danger" data-toggle="modal" data-target="#deleteModal" data-id="@item.CodAs" data-name="@item.Descricao" data-url="@Url.Action("Remover", "Assuntos", new { id = item.CodAs })">Excluir</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

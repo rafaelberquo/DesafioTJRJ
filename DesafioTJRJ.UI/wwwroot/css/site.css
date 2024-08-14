@@ -1,0 +1,57 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+
+/* Modal de Sucesso */
+.modal-success .modal-content {
+    border-color: #d4edda;
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.modal-success .modal-header {
+    background-color: #c3e6cb;
+    color: #155724;
+}
+
+.modal-success .modal-footer .btn-primary {
+    background-color: #28a745;
+    border-color: #28a745;
+}
+
+/* Modal de Erro */
+.modal-error .modal-content {
+    border-color: #f8d7da;
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+.modal-error .modal-header {
+    background-color: #f5c6cb;
+    color: #721c24;
+}
+
+.modal-error .modal-footer .btn-danger {
+    background-color: #dc3545;
+    border-color: #dc3545;
+}
+
+.actionColumn {
+    width: 1%;
+    white-space: nowrap;
+}
